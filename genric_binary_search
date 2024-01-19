@@ -1,0 +1,22 @@
+/*package whatever //do not write package name here */
+
+import java.io.*;
+
+class GFG {
+	public static void main (String[] args) {
+		int[] a ={6,7,12,13,2,3,5};
+		int m=7;
+		int l=0;
+		int r=m-1;
+		while(l+1<r){
+		    int mid=(l+r)/2;
+		    if(a[mid]<a[0]){
+		        r=mid;
+		    }
+		    else{
+		        l=mid;
+		    }
+		}
+		System.out.println(r);
+	}
+}
