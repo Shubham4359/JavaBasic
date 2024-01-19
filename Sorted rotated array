@@ -1,0 +1,40 @@
+/*package whatever //do not write package name here */
+
+import java.io.*;
+
+class GFG {
+	public static void main (String[] args) {
+		int[] a ={6,7,12,13,2,3,5};
+		int m=6;
+		int l=0;
+		int r=m-1;
+		int target=1;
+		int ans=-1;
+		while(l<=r){
+		    int mid=(l+r)/2;
+		    if(a[mid]==target){
+		        System.out.println(mid);
+		        return;
+		    }
+		    if(a[mid]>=a[l]){
+		        // first half
+		        if(target>=a[l]&&target<a[mid]){
+		            r=mid-1;
+		        }
+		        else{
+		            l=mid+1;
+		        }
+		    }
+		    else{
+		      // second half
+		      if(target>a[mid]&&target<=a[r]){
+		          l=mid+1;
+		      }
+		      else{
+		          r=mid-1;
+		      }
+		    }
+		}
+		System.out.println(-1);
+	}
+}
