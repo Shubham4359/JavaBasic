@@ -1,34 +1,98 @@
 import java.util.*;
+
 public class Main {
-  public static void main(String[] args) {
-   Scanner sc=new Scanner(System.in);
-   int n=sc.nextInt();
-   ArrayList<ArrayList<Integer>> graph=new ArraList<>();
-   for(int i=1;i<=n;i++)
-    graph.add(new ArrayList<>());
-   for(int i=2;i<=n;i++)
-   {
-     int u=sc.nextInt();
-     graph.get(u).add(i);
-   }
-   int[] visited=new int[n+1];
-   int[] ans=new int[n+1];
-   dfs(graph,1,visited,ans);
-   for(int i=1;i<=n;i++)
-    System.out.print(ans[i]+" ");
-  }
-  public static int dfs(ArrayList<ArrayList<Integer>> graph,int src , int[] visited, int[] ans )
-  {
-    visited[src]=1;
-    int sum=0;
-    for(int node:graph.get(src))
-    {
-      if(visited[node]==0)
-      {
-        sum+=dfs(graph,node,visited,ans);
-      }
+    public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
+
+        int n = input.nextInt();
+        int m = input.nextInt();
+
+        ArrayList<ArrayList<Integer>> adjlist = new ArrayList<>(n+1);
+
+        for (int i = 1; i <= n+1; i++) {
+            adjlist.add(new ArrayList<>());
+        }
+
+        for (int i = 1; i <= m; i++) {
+            int node1 = input.nextInt();
+            int node2 = input.nextInt();
+
+            adjlist.get(node1).add(node2);
+            adjlist.get(node2).add(node1);
+        }
+
+        // int src = input.nextInt();
+
+        // int target = input.nextInt();
+
+        // int[] dis1 = bfs(adjlist, src, n);
+        // int[] dis2=bfs(adjlist,target,n);
+        // for(int i=1;i<=n;i++){
+        //     if(dis1[i]+dis2[i]==dis1[target]){
+        //         System.out.println(i);
+        //     }
+        // }
+        
+         int[] visited=new int[n+1];
+        // int[] ans= new int[n+1];
+        // dfs(adjlist,1,visited,ans);
+        // for(int i=1;i<=n;i++){
+        //     System.out.print(ans[i]+" ");
+        // }
+        dfs_down(adjlist,1,visited,4);
     }
-    ans[src]=sum;
-    return sum+1;
-  }
+    
+    
+    private static int[] bfs(ArrayList<ArrayList<Integer>> adjlist,int src,int n){
+      Queue<Integer>q= new LinkedList<>();
+      boolean[] visited = new boolean[n+1];
+      int[] dis = new int[n+1];
+      int[] par = new int[n+1];
+      dis[src]=0;
+      visited[src]=true;
+      q.offer(src);
+      par[src]=-1;
+      while(!q.isEmpty()){
+          int cur=q.peek();
+          //System.out.println(cur);
+          q.poll();
+          for(int x:adjlist.get(cur)){
+              if(visited[x]==false){
+                  visited[x]=true;
+                  dis[x]=dis[cur]+1;
+                  par[x]=cur;
+                  q.offer(x);
+              }
+          }
+      }
+      return dis;
+    }
+    // dfs(src) return number of nodes in subtree of src
+    private static int dfs(ArrayList<ArrayList<Integer>> adjlist,int src,int[] visited,int[] ans){
+        visited[src]=1;
+        //System.out.print(src+" ");
+        int cnt=src;
+        for(int child: adjlist.get(src)){
+            if(visited[child]==0){
+                cnt+=dfs(adjlist,child,visited,ans);
+            }
+        }
+        ans[src]=cnt;
+        return cnt;
+    }
+    
+    private static void dfs_down(ArrayList<ArrayList<Integer>> adjlist,int src,int[] visited,int level){
+        visited[src]=1;
+        if(level==1){
+            System.out.print(src+" ");
+            return;
+        }
+        for(int child: adjlist.get(src)){
+            if(visited[child]==0){
+                dfs_down(adjlist,child,visited,level-1);
+            }
+        }
+    }
+
+    
 }
